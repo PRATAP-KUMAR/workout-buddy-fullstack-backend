@@ -13,11 +13,6 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 
-app.use((req, res, next) => {
-    console.log(req.path, req.method);
-    next();
-})
-
 // routes
 app.use('/api/workouts', workoutRoutes);
 app.use('/api/user', userRoutes)
