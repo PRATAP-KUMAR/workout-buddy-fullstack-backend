@@ -11,7 +11,9 @@ const testRoutes = require('./routes/test');
 const app = express();
 
 // middleware
-app.use(cors())
+app.use(cors({
+    origin: ["https://pratap-panabaka-workout-buddy.netlify.app"]
+}));
 app.use(express.json());
 
 // routes
