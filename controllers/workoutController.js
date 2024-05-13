@@ -30,6 +30,10 @@ const getWorkout = async (req, res) => {
 const createWorkout = async (req, res) => {
     const { title, load, reps } = req.body;
 
+    if (!title || !load || !reps) {
+        return res.status(400).json({ error: "All fields must be filled" })
+    }
+
     // add doc to db
     try {
         const user_id = req.user._id;
