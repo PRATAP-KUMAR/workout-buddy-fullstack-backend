@@ -12,7 +12,7 @@ const app = express();
 
 // middleware
 app.use(cors({
-    origin: 'https://pratap-panabaka-workout-buddy.netlify.app', // use your actual domain name (or localhost), using * is not recommended
+    origin: 'https://pratap-panabaka-workout-buddy.netlify.app', // use your actual domain name (or localhost)
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Origin', 'X-Requested-With', 'Accept', 'x-client-key', 'x-client-token', 'x-client-secret', 'Authorization'],
     credentials: true
