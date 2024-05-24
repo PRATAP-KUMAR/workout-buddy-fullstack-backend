@@ -8,7 +8,7 @@ to start this backend
 
 ```bash
 git clone https://github.com/PRATAP-KUMAR/workout-buddy-fullstack-backend.git
-cd workout-mern-backend
+cd workout-buddy-fullstack-backend
 npm install
 npm run dev
 ```
