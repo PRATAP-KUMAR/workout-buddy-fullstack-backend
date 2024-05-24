@@ -1,6 +1,9 @@
 ﻿# Workout Buddy
 ## Single Page App to track your daily Gym exercises
 
+Link to [Frontend](https://github.com/PRATAP-KUMAR/workout-buddy-fullstack-frontend)
+
+
 to start this backend
 
 ```bash
