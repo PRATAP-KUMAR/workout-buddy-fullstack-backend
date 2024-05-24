@@ -7,7 +7,7 @@ Link to [Frontend](https://github.com/PRATAP-KUMAR/workout-buddy-fullstack-front
 to start this backend
 
 ```bash
-git clone https://github.com/PRATAP-KUMAR/workout-mern-backend.git
+git clone https://github.com/PRATAP-KUMAR/workout-buddy-fullstack-backend.git
 cd workout-mern-backend
 npm install
 npm run dev
