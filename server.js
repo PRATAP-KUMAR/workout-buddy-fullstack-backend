@@ -1,32 +1,42 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
+import express from 'express';
+import cors from 'cors';
+import workoutsRouter from './routes/workoutsRouter.js';
+import userRouter from './routes/userRouter.js';
+import dotenv from "dotenv";
 
-const workoutRoutes = require('./routes/workouts');
-const userRoutes = require('./routes/user');
-const testRoutes = require('./routes/test');
+import pool from './db.js';
 
-// express app
+dotenv.config();
+
+// Express app
 const app = express();
 
-// middleware
-app.use(cors());
+// Middleware
 app.use(express.json());
-
+app.use(cors());
+app.use((req, res, next) => {
+    next();
+})
+ 
 // routes
-app.use('/api/workouts', workoutRoutes);
-app.use('/api/user', userRoutes);
-app.use('/api/test', testRoutes);
+app.use('/api/workouts', workoutsRouter);
+app.use('/api/user', userRouter);
 
-// connect to db
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => {
-        // listen for requests
-        app.listen(process.env.PORT, () => {
-            console.log('connected to db & listening on port', process.env.PORT);
-        })
+let connection;
+
+// here I want to implement the logic
+try {
+    const client = await pool.connect();
+    if (client) {
+        connection = true;
+        client.release();
+    }
+} catch (error) {
+    console.log('error', error);
+}
+
+if (connection) {
+    app.listen(3001, () => {
+        console.log('conncted to db & listening on port 3001')
     })
-    .catch((error) => {
-        console.log(error);
-    })
+}

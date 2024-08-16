@@ -1,40 +1,79 @@
-const User = require('../models/userModel');
-const jwt = require('jsonwebtoken');
+import pool from '../db.js';
 
-const createToken = (_id) => {
-    return jwt.sign({ _id }, process.env.SECRET, { expiresIn: '3d' })
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+
+import validator from 'validator';
+
+const createToken = (id) => {
+    return jwt.sign({ id }, process.env.SECRET, { expiresIn: '2d' })
 }
 
-// login user
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        const user = await User.login(email, password)
 
-        // create a token
-        const token = createToken(user._id);
+        let text;
+        let values;
+        let query;
+        let result;
 
-        res.status(200).json({ email, token })
+        if (!email || !password) {
+            throw Error('both user name and password must be provided')
+        }
+
+        text = 'select id, email, password from users where email = $1';
+        values = [email]
+        query = await pool.query(text, values);
+
+        result = query.rows[0]
+
+        if (!result) {
+            throw Error('Incorrect email');
+        }
+
+        const match = await bcrypt.compare(password, result.password)
+
+        if (!match) {
+            throw Error('Incorrect password');
+        }
+
+        const token = createToken(result.id);
+
+        res.status(200).json({ email, token });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 }
 
-// signup user
 const signupUser = async (req, res) => {
     const { email, password } = req.body;
 
-    try {
-        const user = await User.signup(email, password)
+    let text = 'select email from users where email = $1';
+    let values = [email];
+    let response = await pool.query(text, values);
 
-        // create a token
-        const token = createToken(user._id);
+    if (response.rowCount === 0) {
+        const salt = await bcrypt.genSalt(10);
+        const hash = await bcrypt.hash(password, salt);
 
-        res.status(200).json({ email, token })
-    } catch (error) {
-        res.status(400).json({ error: error.message });
+        text = 'insert into users values(default, $1, $2)';
+        values = [email, hash];
+        let query = await pool.query(text, values);
+
+        text = 'select id from users where email = $1';
+        values = [email]
+        query = await pool.query(text, values);
+
+        const userId = query.rows[0].id;
+
+        const token = createToken(userId);
+
+        res.status(200).json({ email, token });
+    } else {
+        res.status(301).send(`${email} already in database, cant create`);
     }
 }
 
-module.exports = { loginUser, signupUser }
+export { loginUser, signupUser }
