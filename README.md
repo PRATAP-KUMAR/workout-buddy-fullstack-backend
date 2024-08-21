@@ -6,7 +6,7 @@ Link to [Frontend Repo](https://github.com/PRATAP-KUMAR/workout-buddy-fullstack-
 
 ```bash
 git clone https://github.com/PRATAP-KUMAR/workout-buddy-fullstack-backend
-cd workouts-buddy-fullstack-backend
+cd workout-buddy-fullstack-backend
 npm install
 ```
 
