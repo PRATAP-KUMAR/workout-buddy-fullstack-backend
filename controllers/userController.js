@@ -47,28 +47,36 @@ const loginUser = async (req, res) => {
 const signupUser = async (req, res) => {
     const { email, password } = req.body;
 
-    let text = 'select email from users where email = $1';
-    let values = [email];
-    let response = await pool.query(text, values);
+    try {
+        if (!email || !password) {
+            throw Error('both user name and password must be provided')
+        }
 
-    if (response.rowCount === 0) {
-        const salt = await bcrypt.genSalt(10);
-        const hash = await bcrypt.hash(password, salt);
+        let text = 'select email from users where email = $1';
+        let values = [email];
+        let response = await pool.query(text, values);
+        
+        if (response.rowCount === 0) {
+            const salt = await bcrypt.genSalt(10);
+            const hash = await bcrypt.hash(password, salt);
 
-        text = 'insert into users values(default, $1, $2)';
-        values = [email, hash];
-        let query = await pool.query(text, values);
+            text = 'insert into users values(default, $1, $2)';
+            values = [email, hash];
+            let query = await pool.query(text, values);
 
-        text = 'select id from users where email = $1';
-        values = [email]
-        query = await pool.query(text, values);
+            text = 'select id from users where email = $1';
+            values = [email]
+            query = await pool.query(text, values);
 
-        const userId = query.rows[0].id;
+            const userId = query.rows[0].id;
 
-        const token = createToken(userId);
+            const token = createToken(userId);
 
-        res.status(200).json({ email, token });
-    } else {
+            res.status(200).json({ email, token });
+        } else {
+            throw Error(`user ${email} is already registered`);
+        }
+    } catch (error) {
         res.status(400).json({ error: error.message });
     }
 }
