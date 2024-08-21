@@ -20,7 +20,7 @@ const addWorkout = async (req, res) => {
 const getWorkouts = async (req, res) => {
     const { user_id } = req; // private prop
 
-    const text = 'select * from workouts where user_id = $1';
+    const text = 'select * from workouts where user_id = $1 order by id desc';
     const values = [user_id];
     const query = await pool.query(text, values);
 
