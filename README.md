@@ -13,11 +13,11 @@ npm install
 ### Prerequisite
 1. you must have PostgreSQL installed in your local machine.
 2. you must create a new database with your choice of name for the database.
-3. you must import the workouts_table.sql file into above created database using the below command line
-replacing the correct values for the -U and -d options (user name and database name)
+3. you must import the `workouts_table.sql` file into above created database using the below command line replacing the correct values for the -U and -d options (user name and database name)
 
-Example
-    ``bash
+    Below is an example command, you must replace `admin` with your username and `workoutsdb` with your database name.
+
+    ```bash
     psql -U admin -W -d workoutsdb -f workouts_table.sql
     ```
 
