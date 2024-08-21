@@ -6,8 +6,8 @@ const addWorkout = async (req, res) => {
 
     const { title, load, reps } = req.body;
 
-    const text = 'insert into workouts values(default, $1, $2, $3) returning id';
-    const values = [title, reps, user_id];
+    const text = 'insert into workouts values(default, $1, $2, $3, $4) returning id';
+    const values = [title, load, reps, user_id];
     const query = await pool.query(text, values);
     const id = query.rows[0].id;
 

@@ -58,6 +58,7 @@ ALTER SEQUENCE public.users_id_seq OWNED BY public.users.id;
 CREATE TABLE public.workouts (
     id integer NOT NULL,
     title character varying NOT NULL,
+    load integer NOT NULL,
     reps integer NOT NULL,
     user_id integer NOT NULL
 );
@@ -111,22 +112,6 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: workouts workouts_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.workouts
-    ADD CONSTRAINT workouts_pkey PRIMARY KEY (id);
-
-
---
--- Name: workouts workouts_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.workouts
-    ADD CONSTRAINT workouts_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
