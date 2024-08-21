@@ -24,7 +24,6 @@ app.use('/api/user', userRouter);
 
 let connection;
 
-// here I want to implement the logic
 try {
     const client = await pool.connect();
     if (client) {

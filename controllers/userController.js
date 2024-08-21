@@ -3,8 +3,6 @@ import pool from '../db.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
-import validator from 'validator';
-
 const createToken = (id) => {
     return jwt.sign({ id }, process.env.SECRET, { expiresIn: '2d' })
 }
@@ -13,7 +11,6 @@ const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-
         let text;
         let values;
         let query;
@@ -72,7 +69,7 @@ const signupUser = async (req, res) => {
 
         res.status(200).json({ email, token });
     } else {
-        res.status(301).send(`${email} already in database, cant create`);
+        res.status(400).json({ error: error.message });
     }
 }
 
